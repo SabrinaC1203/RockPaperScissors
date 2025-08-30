@@ -7,7 +7,9 @@
 
   </head>
   <body>
-    <button id="playButton">Play Round</button>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
     <p>Player Score: <span id="humanScore">0</span></p>
     <p>Computer Score: <span id="computerScore">0</span></p>
     <pre id="log"></pre>
@@ -17,15 +19,21 @@
     let computerScore = 0;
     let round = 0;
 
-    const playButton = document.querySelector("#playButton");
+    const playRock = document.querySelector("#rock");
+    const playPaper = document.querySelector("#paper");
+    const playScissors = document.querySelector("#scissors");
     const playerScoreDisplay = document.querySelector("#humanScore");
     const computerScoreDisplay = document.querySelector("#computerScore");
     const log = document.querySelector("#log");
 
     function getHumanChoice() {
-        const input = prompt("Rock, Paper or Scissors?");
-        if (!input) return null;
-        return input.trim().toLowerCase();
+        const playerOptions =[playPaper, playRock, playScissors];
+        
+        playerOptions.forEach(button => {
+            button.addEventListener("click", () => {
+                const input = button.id;
+            })
+        })
     }
 
     function getComputerChoice() {
@@ -78,30 +86,27 @@
         }
     }
 
-    function letsPlay() {
-        if (round >= 5){
-            return;
-        }
-        const player = getHumanChoice();
-        if (!player || !["rock", "paper", "scissors"].includes(player)){
-            log.textContent += "Invalid or canceled input.";
-            return;
-        }
+   function playGame(playerChoice) {
+      if (round >= 5) return;
 
-        const computer = getComputerChoice();
-        const winner = playRound(player, computer);
+      const computerChoice = getComputerChoice();
+      const winner = playRound(playerChoice, computerChoice);
 
-        updateScores(winner);
-        logRound(player, computer, winner);
+      updateScores(winner);
+      logRound(playerChoice, computerChoice, winner);
 
-        round++;
+      round++;
 
-        if (round === 5) {
-            declareFinalWinner();
-            playButton.disabled = true;
-        }
+      if (round === 5) {
+        declareFinalWinner();
+      }
     }
-    playButton.addEventListener("click", letsPlay);
+
+    [playRock, playPaper, playScissors].forEach(button => {
+      button.addEventListener("click", () => {
+        playGame(button.id);
+      });
+    });
 
     </script>
   </body>
